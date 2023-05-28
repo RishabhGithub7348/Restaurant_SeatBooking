@@ -164,7 +164,7 @@ const handleTimeDown = () => {
   const handleBoxClick = (boxTime) => {
     setExpandedBox(boxTime);
     setSelectedtime(boxTime);
-    console.log(selectedtime)
+    // console.log(selectedtime)
   };
 
   const handleNextButtonClick = () => {
@@ -172,7 +172,7 @@ const handleTimeDown = () => {
     setShowForm(true);
   };
   useEffect(()=> {
-    console.log(selectedtime);
+    // console.log(selectedtime);
   })
 
   const renderBox = (time) => {

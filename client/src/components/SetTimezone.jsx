@@ -17,12 +17,12 @@ const getTimezoneByCountry = (country) => {
 };
 
 const SetTimezone = () => {
-  const [selectedCountry, setSelectedCountry] = useState('India');
+  const [selectedCountry, setSelectedCountry] = useState('Germany');
   const [selectedTimezone, setSelectedTimezone] = useState('');
   const [currentTime, setCurrentTime] = useState('');
   const { country, setCountry, timezone, setTimezone } = useContext(UserContext);
 
-  console.log(timezone)
+  // console.log(timezone)
 
   const handleCountryChange = (event) => {
     const country = event.target.value;
@@ -33,8 +33,8 @@ const SetTimezone = () => {
     setSelectedTimezone(timezone);
     setCountry(country);
     setTimezone(timezone);
-    console.log(country);
-    console.log(timezone);
+    // console.log(country);
+    // console.log(timezone);
   };
 
   useEffect(() => {

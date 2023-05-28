@@ -36,7 +36,7 @@ const SetCalander = () => {
           const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, prevDate.getDate());
           setGlobalCurrentDate(newDate); 
           // Update global current date
-          console.log(globalCurrentDate)
+          
           return newDate;
         });
       };
@@ -97,7 +97,7 @@ const SetCalander = () => {
       setBox4Time('12:45 ');
       setSelectedDate(day);
       
-      console.log(selectedDay);
+    
     } else {
       setSelectedDay(`${getMonthName()} ${day}, ${currentDate.getFullYear()}`);
       setSelectedTime('18:00 ');
@@ -107,10 +107,10 @@ const SetCalander = () => {
       setSelectedDate(day);
 
     }
-    console.log(`Selected date: ${getMonthName()} ${day}`);
+    // console.log(`Selected date: ${getMonthName()} ${day}`);
   };
   useEffect(() => {
-    console.log(selectedDay);
+    // console.log(selectedDay);
   }, [selectedDay]);
   
 

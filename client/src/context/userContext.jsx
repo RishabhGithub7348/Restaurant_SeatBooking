@@ -18,8 +18,8 @@ const getTimezoneByCountry = (country) => {
 export const UserContext = createContext({});
  
 export function UserContextProvider({ children }) {
-  const [country, setCountry] = useState('India');
-  const [timezone, setTimezone] = useState('Asia/Kolkata');
+  const [country, setCountry] = useState('Germany');
+  const [timezone, setTimezone] = useState('Europe/Berlin');
   const [showCalendar, setShowCalendar] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [selectedTime, setSelectedTime] = useState('18:00');

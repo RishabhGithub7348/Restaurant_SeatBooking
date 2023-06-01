@@ -11,7 +11,6 @@ import moment from 'moment-timezone';
 
 const SetTime = () => {
     // const [selectedTimezone, setSelectedTimezone] = useState('Europe/Berlin'); // Default timezone
-    const [isButtonDisabled, setButtonDisabled] = useState(false);
   const { 
     selectedTime,
     setSelectedTime,
@@ -24,19 +23,30 @@ const SetTime = () => {
     selectedtime,
     setSelectedtime,
     setShowForm, 
-     timeRange ,
+    bookedTimes,
+    selectedDay,
+    
   } = useContext(UserContext);
   const [expandedBox, setExpandedBox] = useState(null);
 //   const [timezone, setTimezone] = useState('America/New_York');
 
-const currentDate = new Date();
-const formattedDate = currentDate.toLocaleDateString('en-US', {
+let selectedDate;
+
+if (selectedDay) {
+  selectedDate = new Date(selectedDay);
+} else {
+  selectedDate = new Date();
+}
+const formattedDate = selectedDate.toLocaleDateString('en-US', {
   weekday: 'long',
   month: 'long',
   day: 'numeric',
 });
 
 const handleTimeUp = () => {
+  if (selectedTime === '22:00') {
+    return; // Disable further execution of the function when selected time is 23:00
+  }
   const timeParts = selectedTime.split(' ');
   const [hour, minutes] = timeParts[0].split(':');
   const period = timeParts[1];
@@ -88,25 +98,24 @@ const handleTimeUp = () => {
   const box4NewTime = `${box4NewHour.toString().padStart(2, '0')}:${(box4NewMinutes % 60).toString().padStart(2, '0')}`;
   setBox4Time(box4NewTime);
 
-  const startTime = moment(timeRange.start, 'HH:mm');
-  const endTime = moment(timeRange.end, 'HH:mm');
-  const newSelectedTime = moment(newTime, 'HH:mm');
-
-  if (newSelectedTime.isBefore(endTime)) {
-    setButtonDisabled(true);
-  } else {
-    setButtonDisabled(false);
-  }
+  
 };
 
    
 const handleTimeDown = () => {
-  if (isButtonDisabled) {
-    return; // Skip the function execution when the button is disabled
-  }
+  
+ 
   const timeParts = selectedTime.split(' ');
   const [hour, minutes] = timeParts[0].split(':');
   const period = timeParts[1];
+
+  // Check if the selected time is already 18:00
+  if (hour === '18' && minutes === '00') {
+    return; // Skip the function execution
+  }
+  if (hour === '12' && minutes === '00') {
+    return; // Skip the function execution
+  }
 
   let newHour = parseInt(hour, 10);
   let newMinutes = parseInt(minutes, 10);
@@ -135,15 +144,7 @@ const handleTimeDown = () => {
   const box4NewTime = `${(box4NewHour % 24).toString().padStart(2, '0')}:${(box4NewMinutes % 60).toString().padStart(2, '0')}`;
   setBox4Time(box4NewTime);
 
-  const startTime = moment(timeRange.start, 'HH:mm');
-  const endTime = moment(timeRange.end, 'HH:mm');
-  const newSelectedTime = moment(newTime, 'HH:mm');
-
-  if (newSelectedTime.isAfter(startTime)) {
-    setButtonDisabled(true);
-  } else {
-    setButtonDisabled(false);
-  }
+  
 };
 
 
@@ -192,13 +193,15 @@ const handleTimeDown = () => {
         </div>
       );
     } else {
+      const isDisabled = bookedTimes.includes(time); // Check if the time is present in bookedTimes
       return (
-        <div className="flex items-center text-center flex-col text-xl w-[250px] border-blue-300 text-blue-600 font-bold rounded-md border-2 p-2 cursor-pointer hover:bg-blue-200" onClick={() => handleBoxClick(time)}>
+        <div className={`flex items-center text-center flex-col text-xl w-[250px] border-blue-300 font-bold rounded-md border-2 p-2 cursor-pointer hover:bg-blue-200 ${isDisabled ? 'opacity-50 pointer-events-none bg-blue-100 ' : ''}`} onClick={() => handleBoxClick(time)} disabled={isDisabled}>
           {time}
         </div>
       );
     }
   };
+  
   
 
   return (
@@ -207,16 +210,16 @@ const handleTimeDown = () => {
         <div className="flex items-center text-center flex-col  w-[320px] p-2 text-lg ml-3 font-semibold text-slate-600">
           {formattedDate}
         </div>
-        <IoIosArrowUp  className={`text-2xl cursor-pointer ${
-            isButtonDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-          }`}  onClick={handleTimeDown} />
+        <IoIosArrowUp  className={`text-2xl cursor-pointer 
+            cursor-pointer'
+          `}  onClick={handleTimeDown} />
         {renderBox(selectedTime)}
         {renderBox(box2Time)}
         {renderBox(box3Time)}
         {renderBox(box4Time)}
-        <IoIosArrowDown className={`text-2xl cursor-pointer ${
-            isButtonDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-          }`}         
+        <IoIosArrowDown className={`text-2xl cursor-pointer 
+            cursor-pointer'
+          `}     
           onClick={handleTimeUp}
  />
       </div>

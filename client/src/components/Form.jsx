@@ -110,7 +110,8 @@ const Form = () => {
           name="numOfPersons"
           value={form.numOfPersons}
           onChange={handleChange}
-          >
+          > 
+          <option value="">Select number of persons</option>
             <option value="1">1 person</option>
             <option value="2">2 persons</option>
             <option value="3">3 persons</option>

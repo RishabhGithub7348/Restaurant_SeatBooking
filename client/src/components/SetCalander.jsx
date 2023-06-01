@@ -5,49 +5,40 @@ import { UserContext } from '../context/userContext';
 
 
 const SetCalander = () => {
-  const { 
-   setSelectedTime,
-   setBox2Time,
-   setBox3Time,
-   selectedDay,
-   setSelectedDay,
-   setBox4Time, 
-  } = useContext(UserContext);
-
-   const { currentDate: globalCurrentDate, setCurrentDate: setGlobalCurrentDate } = useContext(UserContext);
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const [currentDate, setCurrentDate] = useState(new Date());
+    
     const originalMonthRef = useRef(currentDate.getMonth());
     const [originalMonth, setOriginalMonth] = useState(currentDate.getMonth());
+    
     const [selectedDate, setSelectedDate] = useState(null);
     const [disabledDates, setDisabledDates] = useState([]);
-    
-   
+    const currentDay = currentDate.getDate();
+const currentMonth = currentDate.getMonth();
+const currentYear = currentDate.getFullYear();
+     const { 
+      setSelectedTime,
+      setBox2Time,
+      setBox3Time,
+      selectedDay,
+        setSelectedDay,
+      setBox4Time, 
+    } = useContext(UserContext);
+       
   
-    
-  
-      const prevMonth = () => {
-        const currentMonth = currentDate.getMonth();
+  const prevMonth = () => {
+    const currentMonth = currentDate.getMonth();
         if (currentMonth === originalMonth) {
           // Disable going to a previous month
           return;
         }
-        setCurrentDate(prevDate => {
-          const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, prevDate.getDate());
-          setGlobalCurrentDate(newDate); 
-          // Update global current date
-          
-          return newDate;
-        });
-      };
+        // const storedCurrentDay = new Date(localStorage.getItem('selectedDate')).getDate();
+    setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+  };
 
   const nextMonth = () => {
-    setCurrentDate(prevDate => {
-      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, prevDate.getDate());
-      setGlobalCurrentDate(newDate); // Update global current date
-      return newDate;
-    });
-
+    // const storedCurrentDay = new Date(localStorage.getItem('selectedDate')).getDate();
+    setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1,1));
   };
 
   const getMonthName = () => {
@@ -69,7 +60,14 @@ const SetCalander = () => {
   useEffect(() => {
     // Update disabled dates when current month changes
     updateDisabledDates();
+    
   }, [currentDate]);
+
+  // useEffect(()=> {
+  //   localStorage.setItem('selectedDate', new Date(currentYear, currentMonth, currentDay));
+  //   const storedCurrentDay = new Date(localStorage.getItem('selectedDate')).getDate();
+  // console.log(storedCurrentDay);
+  // },[])
 
   const updateDisabledDates = () => {
     const disabledDates = [];
@@ -82,11 +80,8 @@ const SetCalander = () => {
         disabledDates.push(i);
       }
     }
-
     setDisabledDates(disabledDates);
   }
-
- 
 
   const handleDateClick = (day) => {
     if (weekdays[(getFirstDayOfMonth() + day - 1) % 7] === 'Sun') {
@@ -107,13 +102,10 @@ const SetCalander = () => {
       setSelectedDate(day);
 
     }
+   
     // console.log(`Selected date: ${getMonthName()} ${day}`);
   };
-  useEffect(() => {
-    // console.log(selectedDay);
-  }, [selectedDay]);
-  
-
+  // console.log(selectedDay);
 
   const shiftedWeekdays = [...weekdays.slice(getFirstDayOfMonth()), ...weekdays.slice(0, getFirstDayOfMonth())];
   return (
@@ -141,7 +133,7 @@ const SetCalander = () => {
   const isWeekend = shiftedWeekdays[index % 7] === 'Mon' ;
   const isCurrentDate = currentDate.getDate() === day && currentDate.getMonth() === new Date(currentDate.getFullYear(), new Date().getMonth(), 1).getMonth();
   const month = currentDate.getMonth();
-  const isDisabled = disabledDates.includes(day) || (originalMonth === currentDate.getMonth() && day < new Date().getDate())||
+  const isDisabled = disabledDates.includes(day) || (originalMonth === currentDate.getMonth() && day <= new Date().getDate())||
   (shiftedWeekdays[index % 7] === 'Mon' &&
     !(
       (month === 9 && day === 3) || // October 3, 2023

@@ -20,7 +20,6 @@ const SetTime = () => {
     setBox3Time,
     box4Time,
     setBox4Time,
-    selectedtime,
     setSelectedtime,
     setShowForm, 
     bookedTimes,

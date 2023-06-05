@@ -29,13 +29,32 @@ function stringToColor(string) {
   }
  
   function stringAvatar(name) {
+    if (!name || name.trim() === '') {
+      return {
+        sx: {
+          bgcolor: '#000000', // Replace with your default color when name is empty
+        },
+        children: '',
+      };
+    }
+    
+    const nameParts = name.split(' ');
+    let initials = '';
+    
+    if (nameParts.length >= 2) {
+      initials = `${nameParts[0][0]}${nameParts[1][0]}`;
+    } else {
+      initials = nameParts[0][0];
+    }
+    
     return {
       sx: {
         bgcolor: stringToColor(name),
       },
-      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+      children: initials,
     };
   }
+  
 
 
 const Admin = () => {
@@ -129,7 +148,7 @@ const Admin = () => {
             />
           )}
           
-    <div className='flex flex-col bg-[#f9fafe] w-full h-screen '>
+    <div className='flex flex-col bg-[#f9fafe] w-full h-screen  '>
       <div className='flex items-center justify-between mt-3 ml-3 mr-3'>
      <div className='flex items-center ml-9 '>
        <h1 className='text-xl font-bold text-gray-700'>Customer</h1>
@@ -155,7 +174,7 @@ const Admin = () => {
      </div>
       </div>
       <div className='w-full h-px mt-2  bg-slate-200' />
-      <div className=''>
+      <div className='pb-20'>
   <div className='flex items-center justify-between gap-2 mt-6 ml-10 mr-10'>
     <div className='  w-[180px] text-center'>
       <p className='text-slate-600 font-semibold text-base' >Name</p>

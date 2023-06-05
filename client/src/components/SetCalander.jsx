@@ -13,6 +13,8 @@ const SetCalander = () => {
     
     const [selectedDate, setSelectedDate] = useState(null);
     const [disabledDates, setDisabledDates] = useState([]);
+   
+    
     const currentDay = currentDate.getDate();
 const currentMonth = currentDate.getMonth();
 const currentYear = currentDate.getFullYear();
@@ -32,18 +34,23 @@ const currentYear = currentDate.getFullYear();
           // Disable going to a previous month
           return;
         }
+       
         // const storedCurrentDay = new Date(localStorage.getItem('selectedDate')).getDate();
     setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    
+    
   };
 
   const nextMonth = () => {
     // const storedCurrentDay = new Date(localStorage.getItem('selectedDate')).getDate();
     setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1,1));
+
   };
 
   const getMonthName = () => {
     return currentDate.toLocaleString('default', { month: 'long' });
   };
+  
 
   const getDaysInMonth = () => {
     const year = currentDate.getFullYear();

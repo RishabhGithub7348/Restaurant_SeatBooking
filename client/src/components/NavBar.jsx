@@ -153,7 +153,7 @@ const NavBar = () => {
         </Modal.Footer>
       </Modal>
     <div>
-      <Navbar isBordered={isDark} variant="sticky">
+      <Navbar isBordered={isDark} variant="sticky" className="sticky top-0">
         <Navbar.Brand>
           <IoEarthSharp />
           <Text b color="inherit" hideIn="xs">

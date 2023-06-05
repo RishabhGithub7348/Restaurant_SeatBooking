@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
+import emailjs from "@emailjs/browser";
 
 import axios from 'axios';
 
@@ -32,7 +33,7 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
       const payload = {
         ...form,
@@ -40,10 +41,23 @@ const Form = () => {
         selectedtime,
       };
       console.log(payload);
-  
+
       const response = await axios.post('http://localhost:3001/api/submitForm', payload);
-  
+
       if (response.status === 200) {
+        const selectedDateTime = `I want to inform you that i booked seat on  ${selectedDay} at ${selectedtime}`;
+        await emailjs.send(
+          'service_63wd8ft', // Replace with your email service ID
+          'template_7c9wpph', // Replace with your email template ID
+          {
+            from_name: form.name,
+            to_name: "Rishabh Maurya",
+            from_email: form.email,
+            to_email: "rishabh.2024cse1106@kiet.edu",
+            message: selectedDateTime,
+          },
+          'FSzvlBm91LxklB-Rn' // Replace with your email user ID
+        );
         setLoading(false);
         console.log('Form data submitted successfully');
         alert("Thank you. Your seat is confirmed.");
@@ -59,7 +73,6 @@ const Form = () => {
       alert("Ahh, something went wrong. Please try again.");
     }
   };
-  
   
 
   return (

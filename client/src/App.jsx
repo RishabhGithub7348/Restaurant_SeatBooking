@@ -16,7 +16,7 @@ function App() {
     <>
     <BrowserRouter>
       <div className='flex flex-col h-screen w-full  '>
-        <NavBar/>
+        <NavBar />
       
       <Routes>
        

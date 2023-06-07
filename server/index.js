@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const cron = require('node-cron');
+// const cron = require('node-cron');
 const moment = require('moment');
 
 
@@ -12,10 +12,7 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3001;
-const accountSid = 'AC1423699ab747fe447846880ffbf00f81';
-const authToken = '7a9537ca2061f3215a1fa85eab4f09ba';
 
-const client = require('twilio')(accountSid, authToken);
 
 
 

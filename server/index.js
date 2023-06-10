@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-// const cron = require('node-cron');
+const cron = require('node-cron');
 const moment = require('moment');
 
 
-
+const accountSid = 'AC1423699ab747fe447846880ffbf00f81';
+const authToken = '7a9537ca2061f3215a1fa85eab4f09ba';
+const client = require('twilio')(accountSid, authToken);
 require('dotenv').config();
 
 const app = express();
@@ -66,42 +68,46 @@ app.use(express.static('public'));
 
 
 
-// cron.schedule('* * * * *', async () => {
-//   try {
-//     // Get the current date and time
-//     const currentDate = moment().format('MMMM D, YYYY');
-//     const currentTime = moment().format('HH:mm ');
+cron.schedule('* * * * *', async () => {
+  try {
+    // Get the current date and time
+    const currentDate = moment().format('MMMM D, YYYY');
+    const currentTime = moment().format('HH:mm ');
 
-//     // Calculate the current time plus 2 hours
-//     const twoHoursLater = moment().add(2, 'hours');
+    // Calculate the current time plus 2 hours
+    // const twoHoursLater = moment().add(2, 'hours');
+    const twoHoursLater = moment().add(2, 'hours').format('HH:mm ');
 
-//     // Query the database to check if there is a reservation within the next 2 hours
-//     const reservationByDay = await Reservation.findOne({ selectedDay: currentDate }).exec();
-//     const reservationByTime = await Reservation.findOne({ selectedtime: twoHoursLater }).exec();
+    // Query the database to check if there is a reservation within the next 2 hours
+    const reservationByDay = await Reservation.findOne({ selectedDay: currentDate }).exec();
+    const reservationByTime = await Reservation.findOne({ selectedtime: twoHoursLater.toString() }).exec();
     
-//     if (reservationByDay && reservationByTime) {
-//       // Match found based on selectedDay and selectedtime
-//       console.log('Reservation found based on both selectedDay and selectedtime:', reservationByDay, reservationByTime);
-//       // Handle the result
-//     } else if (reservationByDay) {
-//       // Match found based on selectedDay, but no match for selectedtime
-//       console.log('Reservation found based on selectedDay only:', reservationByDay);
-//       // Handle the case
-//     } else if (reservationByTime) {
-//       // Match found based on selectedtime, but no match for selectedDay
-//       console.log('Reservation found based on selectedtime only:', reservationByTime);
-//       // Handle the case
-//     } else {
-//       // No match found for selectedDay and selectedtime
-//       console.log('No reservation found for the selectedDay and selectedtime');
-//       // Handle the case
-//     }
+    if (reservationByDay && reservationByTime) {
+      // Match found based on selectedDay and selectedtime
+      const message = `Your seat is booked on ${reservationByDay.selectedDay} at ${reservationByTime.selectedtime}`;
+        sendMessage(message);
+      console.log('Reservation found based on both selectedDay and selectedtime:');
+      // Handle the result
+    } else if (reservationByDay) {
+      // Match found based on selectedDay, but no match for selectedtime
+      console.log('Reservation found based on selectedDay only:');
+      // Handle the case
+    } else if (reservationByTime) {
+      // Match found based on selectedtime, but no match for selectedDay
+      console.log('Reservation found based on selectedtime only:');
+      // Handle the case
+    } else {
+      // No match found for selectedDay and selectedtime
+      console.log('No reservation found for the selectedDay and selectedtime');
+      // Handle the case
+    }
     
-//     console.log(`Scheduler is running every minute. Current time: ${moment().format('HH:mm')} date: ${moment().format('MMMM D, YYYY')}`);
-//   } catch (error) {
-//     console.error('Error checking database:', error);
-//   }
-// });
+    
+    console.log(`Scheduler is running every minute. Current time: ${moment().format('HH:mm')} date: ${moment().format('MMMM D, YYYY')}`);
+  } catch (error) {
+    console.error('Error checking database:', error);
+  }
+});
 
 
 
@@ -113,17 +119,17 @@ app.use(express.static('public'));
 
 
 
-// function sendMessage() {
+function sendMessage(message) {
 
-//   client.messages
-//     .create({
-//       body: 'Your appointment is coming up on May 13, 2023 at 18:00',
-//       from: 'whatsapp:+14155238886',
-//       to: `whatsapp:+917348318373`
-//     })
-//     .then(message => console.log(message.sid))
-//     .catch(err => console.error(err));
-// }
+  client.messages
+    .create({
+      body: message,
+      from: '+19897471986',
+        to: '+917348318373'
+    })
+    .then(message => console.log(message.sid))
+    .catch(err => console.error(err));
+}
 
 const auth = (req, res, next) => {
  

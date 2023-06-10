@@ -16,26 +16,17 @@ function App() {
     <>
     <BrowserRouter>
       <div className='flex flex-col h-screen w-full  '>
-        <NavBar />
-      
+        <NavBar />     
       <Routes>
-       
-        
-          
-
             {
               isAuth ? (
-                <>
-                
+                <>             
                 <Route path="/admin" element={<Admin />} />
                 </>
               ) : (
                 <Route path="/" element={<Calandy />} />
               )
             }
-         
-        
-        
       </Routes>
       </div>
       </BrowserRouter>

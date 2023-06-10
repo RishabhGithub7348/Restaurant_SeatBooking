@@ -17,8 +17,8 @@ const NavBar = () => {
   const [password, setPassword] = useState('');
   const {isAuth, setIsAuth} = useContext(UserContext);
   const navigate = useNavigate();
-  console.log(username);
-  console.log(password)
+  // console.log(username);
+  // console.log(password)
   
 
   const isDark = false;
@@ -28,11 +28,11 @@ const NavBar = () => {
     setVisible(false);
     console.log("closed");
   };
-  console.log(isAuth);
+  // console.log(isAuth);
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/api/admin-login', {
+      const response = await axios.post('https://restaurant-seat-booking.onrender.com/api/admin-login', {
         username,
         password
       });
@@ -44,7 +44,7 @@ const NavBar = () => {
         localStorage.setItem('token', response.data.token);
        
   
-        console.log(response.data);
+        // console.log(response.data);
         
   
         // Reset the username and password
@@ -72,7 +72,7 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/api/admin-logout');
+      const response = await axios.post('https://restaurant-seat-booking.onrender.com/api/admin-logout');
   
       // Check if the response data exists
       if (response && response.data) {

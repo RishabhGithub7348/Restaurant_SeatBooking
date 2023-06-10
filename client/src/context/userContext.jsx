@@ -44,7 +44,7 @@ export function UserContextProvider({ children }) {
 
   const fetchReservations = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/getAllData', {
+      const response = await axios.get('https://restaurant-seat-booking.onrender.com/api/getAllData', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -75,7 +75,7 @@ useEffect(() => {
       };
 
       // send the GET request to fetch the user's data
-      const response = await axios.get('http://localhost:3001/api/admin/profile', config);
+      const response = await axios.get('https://restaurant-seat-booking.onrender.com/api/admin/profile', config);
       setUserData(response.data);
       setIsAuth(true);
     } catch (error) {
@@ -90,7 +90,7 @@ useEffect(() => {
 
 
 
-console.log(userData);
+// console.log(userData);
 
 const filterReservationsByDay = (reservations, day) => {
   const filteredReservations = reservations.filter(reservation => {
@@ -116,7 +116,7 @@ useEffect(() => {
   setBookedTimes(extractedTime);
 }, [bookedDates]);
 
-console.log(bookedTimes);
+// console.log(bookedTimes);
 
 
 

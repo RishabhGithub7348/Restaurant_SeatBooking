@@ -46,7 +46,7 @@ const UpdateSeatModal = ({ visible, onClose, id, Updateseat }) => {
           };
       
           // Send a PUT request to update the seat details
-          const response = await axios.patch(`http://localhost:3001/api/editseat/${id}`, data);
+          const response = await axios.patch(`https://restaurant-seat-booking.onrender.com/api/editseat/${id}`, data);
           
       
           // Handle the response

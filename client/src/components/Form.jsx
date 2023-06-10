@@ -40,7 +40,7 @@ const Form = () => {
         selectedDay,
         selectedtime,
       };
-      console.log(payload);
+      // console.log(payload);
 
       const response = await axios.post('https://restaurant-seat-booking.onrender.com/api/submitForm', payload);
 

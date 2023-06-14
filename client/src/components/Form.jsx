@@ -42,7 +42,7 @@ const Form = () => {
       };
       // console.log(payload);
 
-      const response = await axios.post('https://restaurant-seat-booking.onrender.com/api/submitForm', payload);
+      const response = await axios.post('http://localhost:3001/api/submitForm', payload);
 
       if (response.status === 200) {
         const selectedDateTime = `I want to inform you that i booked seat on  ${selectedDay} at ${selectedtime}`;

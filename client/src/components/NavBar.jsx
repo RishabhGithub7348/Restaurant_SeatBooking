@@ -32,7 +32,7 @@ const NavBar = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('https://restaurant-seat-booking.onrender.com/api/admin-login', {
+      const response = await axios.post('http://localhost:3001/api/admin-login', {
         username,
         password
       });
@@ -72,7 +72,7 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post('https://restaurant-seat-booking.onrender.com/api/admin-logout');
+      const response = await axios.post('http://localhost:3001/api/admin-logout');
   
       // Check if the response data exists
       if (response && response.data) {

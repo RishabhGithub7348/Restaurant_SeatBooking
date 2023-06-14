@@ -108,7 +108,7 @@ const Admin = () => {
 
     const UpdateSeat = async (reservationId) => { 
       try {
-        const response = await axios.get(`https://restaurant-seat-booking.onrender.com/api/getReservation/${reservationId}`);
+        const response = await axios.get(`http://localhost:3001/api/getReservation/${reservationId}`);
         setUpdateseat(response.data);
         
         setIsModalVisible(true);
@@ -121,7 +121,7 @@ const Admin = () => {
     const deleteSeat = async (reservationId) => {
       try {
         // Make an HTTP DELETE request to delete the reservation seat from the database
-        await axios.delete(`https://restaurant-seat-booking.onrender.com/api/deleteSeat/${reservationId}`);
+        await axios.delete(`http://localhost:3001/api/deleteSeat/${reservationId}`);
   
         // Update the reservations state by removing the deleted reservation
         setReservations((prevReservations) =>

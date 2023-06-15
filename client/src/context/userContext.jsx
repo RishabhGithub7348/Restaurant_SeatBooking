@@ -25,7 +25,7 @@ export function UserContextProvider({ children }) {
   const [showForm, setShowForm] = useState(false);
   const [selectedTime, setSelectedTime] = useState('18:00');
   const [box2Time, setBox2Time] = useState('18:15');
-  const [box3Time, setBox3Time] = useState('18:30 ');
+  const [box3Time, setBox3Time] = useState('18:30');
   const [box4Time, setBox4Time] = useState('18:45');
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedtime, setSelectedtime] = useState(null);

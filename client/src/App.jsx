@@ -20,7 +20,8 @@ function App() {
       <Routes>
             {
               isAuth ? (
-                <>             
+                <>    
+                         
                 <Route path="/admin" element={<Admin />} />
                 </>
               ) : (

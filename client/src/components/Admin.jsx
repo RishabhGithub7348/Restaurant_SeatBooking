@@ -59,7 +59,7 @@ function stringToColor(string) {
 
 const Admin = () => {
    const {reservations,
-    setReservations}  = useContext(UserContext);
+    setReservations, deleteReservation}  = useContext(UserContext);
     const [updateseat, setUpdateseat] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -124,9 +124,7 @@ const Admin = () => {
         await axios.delete(`http://localhost:3001/api/deleteSeat/${reservationId}`);
   
         // Update the reservations state by removing the deleted reservation
-        setReservations((prevReservations) =>
-          prevReservations.filter((prevReservation) => prevReservation._id !== reservationId)
-        );
+        deleteReservation(reservationId);
   
         console.log('Reservation seat deleted successfully');
       } catch (error) {

@@ -18,7 +18,7 @@ import { UserContext } from '../context/userContext';
 
 const UpdateSeatModal = ({ visible, onClose, id, Updateseat }) => {
     const [updateSeat, setUpdateSeat] = useState(Updateseat);
-    const {setUpdate} = useContext(UserContext);
+    const {setUpdate, updateReservation} = useContext(UserContext);
     
     const format = 'HH:mm';
 
@@ -41,8 +41,8 @@ const UpdateSeatModal = ({ visible, onClose, id, Updateseat }) => {
             email: updateSeat.email,
             telephone: updateSeat.telephone,
             numOfPersons: updateSeat.numOfPersons,
-            selectedDay: updateSeat.selectedDay ? dayjs(updateSeat.selectedDay).format("DD MMM, YYYY") : null,
-            selectedtime: dayjs(updateSeat.selectedtime, "HH:mm").format("HH:mm"),
+            selectedDay: updateSeat.selectedDay ? dayjs(updateSeat.selectedDay).format('MMMM D, YYYY') : null,
+            selectedtime: dayjs(updateSeat.selectedtime, "HH:mm ").format("HH:mm "),
           };
       
           // Send a PUT request to update the seat details
@@ -50,8 +50,12 @@ const UpdateSeatModal = ({ visible, onClose, id, Updateseat }) => {
           
       
           // Handle the response
-          console.log(response.data);
-          setUpdate(true);
+            if (response.status === 200) {
+                updateReservation(id, data);
+
+            // setUpdate(true);
+            }
+          
           onClose();
         } catch (error) {
 

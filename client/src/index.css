@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.ant-btn-primary {
+    background-color: rgb(89, 143, 220);
+}

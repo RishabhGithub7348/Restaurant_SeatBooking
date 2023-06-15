@@ -59,10 +59,31 @@ export function UserContextProvider({ children }) {
 
   useEffect(() => {
     fetchReservations();
-  }, [setUpdate, update]);
+  }, [setUpdate, update, isAuth ]);
 
+  const updateReservation = (reservationId, updatedData) => {
+    setReservations(prevReservations => {
+      return prevReservations.map(reservation => {
+        if (reservation._id === reservationId) {
+          // Update the reservation with the modified data
+          const updatedReservation = { ...reservation, ...updatedData };
+          setUpdate(true);
+          return updatedReservation;
+        }
+        return reservation;
+      });
+    });
+  };
 
-
+  const deleteReservation = (reservationId) => {
+    setReservations(prevReservations => {
+      const updatedReservations = prevReservations.filter(reservation => reservation._id !== reservationId);
+      setUpdate(true);
+      return updatedReservations;
+    });
+  };
+  
+  
 // Assuming you have stored the token in localStorage
 
 useEffect(() => {
@@ -84,7 +105,7 @@ useEffect(() => {
   };
 
   fetchUserData();
-}, [setIsAuth]);
+}, [setIsAuth, ]);
 
 
 
@@ -116,7 +137,7 @@ useEffect(() => {
   setBookedTimes(extractedTime);
 }, [bookedDates]);
 
-// console.log(bookedTimes);
+console.log(bookedTimes);
 
 
 
@@ -160,7 +181,9 @@ useEffect(() => {
         setUpdate,
         isAuth,
         setIsAuth,
-        bookedTimes
+        bookedTimes,
+        updateReservation,
+        deleteReservation,
         
         
       }}

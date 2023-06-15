@@ -15,7 +15,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3001;
 
-
+const twilioPhoneNumber = '+19897471986'; // Your Twilio phone number
 
 
 mongoose.connect('mongodb+srv://rishabhmaurya7654:Rishabh9876@cluster0.fjxekgy.mongodb.net/?retryWrites=true&w=majority', {
@@ -85,7 +85,8 @@ cron.schedule('* * * * *', async () => {
     if (reservationByDay && reservationByTime) {
       // Match found based on selectedDay and selectedtime
       const message = `Your seat is booked on ${reservationByDay.selectedDay} at ${reservationByTime.selectedtime}`;
-        sendMessage(message);
+      const phone = reservationByTime.telephone;
+        sendMessage(message, phone);
       console.log('Reservation found based on both selectedDay and selectedtime:');
       // Handle the result
     } else if (reservationByDay) {
@@ -119,13 +120,13 @@ cron.schedule('* * * * *', async () => {
 
 
 
-function sendMessage(message) {
+function sendMessage(message, phone) {
 
   client.messages
     .create({
       body: message,
-      from: '+19897471986',
-        to: '+917348318373'
+      from: twilioPhoneNumber,
+        to: phone
     })
     .then(message => console.log(message.sid))
     .catch(err => console.error(err));

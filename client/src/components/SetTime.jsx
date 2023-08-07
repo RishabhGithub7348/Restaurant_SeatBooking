@@ -169,7 +169,10 @@ const handleTimeDown = () => {
 
   const handleNextButtonClick = () => {
     // Show the form and hide the calendar
-    setShowForm(true);
+    if(selectedDay){
+      setShowForm(true);
+    }
+    
   };
   useEffect(()=> {
     // console.log(selectedtime);
@@ -192,9 +195,9 @@ const handleTimeDown = () => {
         </div>
       );
     } else {
-      const isDisabled = bookedTimes.includes(time); // Check if the time is present in bookedTimes
+      // const isDisabled = bookedTimes.includes(time); // Check if the time is present in bookedTimes
       return (
-        <div className={`flex items-center text-center flex-col text-xl w-[250px] border-blue-300 font-bold rounded-md border-2 p-2 cursor-pointer hover:bg-blue-200 ${isDisabled ? 'opacity-50 pointer-events-none bg-blue-100 ' : ''}`} onClick={() => handleBoxClick(time)} disabled={isDisabled}>
+        <div className={`flex items-center text-center flex-col text-xl w-[250px] border-blue-300 font-bold rounded-md border-2 p-2 cursor-pointer hover:bg-blue-200 `} onClick={() => handleBoxClick(time)} >
           {time}
         </div>
       );

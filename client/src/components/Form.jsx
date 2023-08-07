@@ -23,7 +23,8 @@ const Form = () => {
     selectedtime,
     setSelectedtime,
    } = useContext(UserContext)
-   
+   const [formSubmitted, setFormSubmitted] = useState(false);
+
    const { register, handleSubmit, formState: { errors } } = useForm();
 
 
@@ -39,7 +40,13 @@ const Form = () => {
 
   const onSubmit = async () => {
     
+    if (!form.email || !form.name || !form.telephone || !form.numOfPersons || !selectedDay || !selectedtime) {
+      toast.error("Please fill all the fields");
+      setFormSubmitted(true);
+      return;
+    }
     setLoading(true);
+    
 
     try {
       const payload = {
@@ -47,7 +54,7 @@ const Form = () => {
         selectedDay,
         selectedtime,
       };
-      // console.log(payload);
+      console.log(payload);
 
       const response = await axios.post('http://localhost:3001/api/submitForm', payload);
 
@@ -75,6 +82,7 @@ const Form = () => {
           numOfPersons: "",
           message: "",
         });
+        setFormSubmitted(false);
         setSelectedDay('');
         setSelectedtime('');
         toast.success("Thank you. Your seat is confirmed.", {
@@ -85,6 +93,7 @@ const Form = () => {
       }
     } catch (error) {
       setLoading(false);
+      setFormSubmitted(false);
       console.error("Error submitting form data:", error);
       toast.error("Ahh, something went wrong. Please try again.");
     }
@@ -108,8 +117,9 @@ const Form = () => {
         </div>
         <div className='flex flex-col'>
           <div className='flex items-center'>
+
           <input 
-           {...register('name', { required: true })}
+           {...register('name')}
           className='flex-1 items-center outline-0  focus:border focus:ring-2  focus:ring-blue-500 focus:border-blue-500 focus:outline-none border-2 rounded-lg bg-slate-100 p-2'
           name="name"
           value={form.name}
@@ -117,7 +127,7 @@ const Form = () => {
           type="text" placeholder='Enter your Name' />
           </div>
          <div>
-         {errors.name && <p className="text-red-500">Name is required</p>}
+         {formSubmitted && !form.name && <p className="text-red-500">Name is required</p>}
          </div>
         </div>
         <div>
@@ -125,8 +135,14 @@ const Form = () => {
         </div>
         <div className='flex flex-col'>
         <div className='flex items-center'>
-          <input 
-         {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })}
+        <input
+           {...register('email', {
+            
+            pattern: {
+              value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              message: 'Invalid email address',
+            },
+          })}
           className='flex-1 items-center outline-0  focus:border focus:ring-2  focus:ring-blue-500 focus:border-blue-500 focus:outline-none border-2 rounded-lg bg-slate-100 p-2'
            name="email"
            value={form.email}
@@ -135,7 +151,8 @@ const Form = () => {
           
         </div>
         <div>
-          {errors?.email && <p className="text-red-500">{ errors.email.type === 'pattern' ? errors.email?.message : "Email is required"  }</p>}
+        {errors.email && <p className='text-red-500'>{errors.email.message}</p>}
+        {formSubmitted && !form.email && <p className='text-red-500'>Email is required</p>}
           </div>
         </div>
         <div>
@@ -145,27 +162,26 @@ const Form = () => {
         <div className='flex items-center'>
           
           <input 
-           {...register("telephone", {
-            required: true,
-            maxLength: 15,
-            minLength: 10,
-            pattern: /^\+\d{1,3}-?\d{4,14}$/
+           
+           {...register('telephone', {
+            
+            pattern: {
+              value: /^[0-9]{10,15}$/,
+              message: 'Invalid phone number',
+            },
           })}
 
           className='flex-1 items-center outline-0  focus:border focus:ring-2  focus:ring-blue-500 focus:border-blue-500 focus:outline-none border-2 rounded-lg bg-slate-100 p-2'
           name='telephone'
           value={form.telephone}
+          type="tel"
           onChange={handleChange}
-          type="tel" placeholder='Enter your Telephone' />        
+           placeholder='Enter your Telephone' />        
         </div>
         <div>
-        {errors.telephone && (
-      <p className="text-red-500">
-        {errors.telephone.type === 'required'
-          ? "Telephone is required"
-          : "Invalid phone number"}
-      </p>
-    )}
+        {errors.telephone && <p className='text-red-500'>{errors.telephone.message}</p>}
+        {formSubmitted && !form.telephone && <p className='text-red-500'>Telephone is required</p>}
+    
         </div>
         </div>
         <div>
@@ -174,7 +190,7 @@ const Form = () => {
          <div className='flex-col'>
          <div className='flex items-center'>
           <select 
-            {...register("numOfPersons", { required: true })}
+            {...register("numOfPersons")}
           className='flex-1 outline-0 border-2 rounded-lg bg-slate-100 p-2'
           name="numOfPersons"
           value={form.numOfPersons}
@@ -195,7 +211,7 @@ const Form = () => {
           </select>
         </div>
         <div>
-        {errors.numOfPersons && <p className="text-red-500">Number of persons is required</p>}
+        {formSubmitted && !form.numOfPersons && <p className="text-red-500">Number of persons is required</p>}
         </div>
          </div>
 
